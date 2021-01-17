@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimerIView: View {
+struct TimerView: View {
   var body: some View {
     Text("00:00:00")
   }
@@ -15,6 +15,6 @@ struct TimerIView: View {
 
 struct TimerIView_Previews: PreviewProvider {
   static var previews: some View {
-    TimerIView()
+    TimerView()
   }
 }
