@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct TimerView: View {
-  @StateObject private var timerManager = TimerManager()
-  
+  @ObservedObject var timerManager: TimerManager
+
   var body: some View {
     VStack {
       Text(convertCountToTimeString(
@@ -73,6 +73,6 @@ struct Shadow: ViewModifier {
 
 struct TimerIView_Previews: PreviewProvider {
   static var previews: some View {
-    TimerView()
+    TimerView(timerManager: TimerManager())
   }
 }
