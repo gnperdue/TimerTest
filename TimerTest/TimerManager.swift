@@ -12,7 +12,9 @@ enum timerMode {
 }
 
 
-public func convertCountToTimeString(elapsedSeconds: Double) -> String {
+public func convertCountToTimeString(
+  elapsedSeconds: Double, includeMiliseconds: Bool = true
+) -> String {
   if elapsedSeconds < 0 { // want all 0's to have a chance to show
     return "00:00:00"
   }
@@ -33,8 +35,11 @@ public func convertCountToTimeString(elapsedSeconds: Double) -> String {
   if minutes < 10 {
     minutesString = "0" + minutesString
   }
-  
-  return "\(minutesString):\(secondsString):\(milisecondsString)"
+
+  if includeMiliseconds {
+    return "\(minutesString):\(secondsString):\(milisecondsString)"
+  }
+  return "\(minutesString):\(secondsString)"
 }
 
 
