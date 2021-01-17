@@ -1,6 +1,6 @@
 //
-//  TimerIView.swift
-//  TimerTest
+//  TimerView.swift
+//  WeightliftingLog
 //
 //  Created by Gabriel Perdue on 1/17/21.
 //
@@ -14,11 +14,15 @@ struct TimerView: View {
     VStack {
       Text(convertCountToTimeString(
             elapsedSeconds: timerManager.elapsedSeconds))
-        .font(.custom("courier", size: 70))
-        .modifier(Shadow())
+        .font(.custom("courier", size: 32, relativeTo: .headline))
+//        .modifier(Shadow())
         .padding()
-      HStack {
-        //
+      Text(convertCountToTimeString(
+            elapsedSeconds: timerManager.elapsedSeconds))
+        .font(.custom("courier", size: 32))
+//        .modifier(Shadow())
+        .padding()
+      HStack(spacing: 22) {
         Button(action: {
           print("pressed play/pause")
           switch timerManager.mode {
@@ -31,35 +35,43 @@ struct TimerView: View {
           }
         }, label: {
           if (timerManager.mode != .running) {
-            Label("Start", systemImage: "play.circle")
+            TimerButtonLabel(
+              title: "Start", systemImage: "play.circle", color: .green)
           } else {
-            Label("Pause", systemImage: "pause.circle")
+            TimerButtonLabel(
+              title: "Pause", systemImage: "pause.circle", color: .yellow)
           }
         })
-        .padding()
-        .background((timerManager.mode != .running) ?
-                      Color.green.opacity(0.1) : Color.yellow.opacity(0.1))
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke((timerManager.mode != .running) ?
-                      Color.green : Color.yellow, lineWidth: 5))
-        //
-        Spacer()
-        //
         Button(action: {
           print("pressed stop")
           timerManager.stop()
         }, label: {
-          Label("Stop", systemImage: "stop.circle")
+          TimerButtonLabel(
+            title: "Stop", systemImage: "stop.circle", color: .red)
         })
-        .padding()
-        .background(Color.red.opacity(0.1))
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke(Color.red, lineWidth: 5))
       }
       .padding(.horizontal)
     }
+  }
+}
+
+
+struct TimerButtonLabel: View {
+  let title: String
+  let systemImage: String
+  let color: Color
+
+  var body: some View {
+    HStack {
+      Spacer()
+      Label(title, systemImage: systemImage)
+      Spacer()
+    }
+    .frame(height: 44)
+    .background(color.opacity(0.25))
+    .overlay(
+      RoundedRectangle(cornerRadius: 6)
+        .stroke(color, lineWidth: 5))
   }
 }
 
@@ -71,8 +83,46 @@ struct Shadow: ViewModifier {
 }
 
 
-struct TimerIView_Previews: PreviewProvider {
+struct TimerView_Previews: PreviewProvider {
   static var previews: some View {
-    TimerView(timerManager: TimerManager())
+    Group {
+      TimerView(timerManager: TimerManager())
+        .preferredColorScheme(.light)
+        .previewLayout(.fixed(width: 400, height: 200))
+
+      TimerButtonLabel(
+        title: "Start", systemImage: "play.circle", color: Color.green)
+        .preferredColorScheme(.light)
+        .previewLayout(.fixed(width: 400, height: 80))
+
+      TimerButtonLabel(
+        title: "Pause", systemImage: "pause.circle", color: Color.yellow)
+        .preferredColorScheme(.light)
+        .previewLayout(.fixed(width: 400, height: 80))
+
+      TimerButtonLabel(
+        title: "Stop", systemImage: "stop.circle", color: Color.red)
+        .preferredColorScheme(.light)
+        .previewLayout(.fixed(width: 400, height: 80))
+
+      TimerView(timerManager: TimerManager())
+        .preferredColorScheme(.dark)
+        .previewLayout(.fixed(width: 400, height: 200))
+
+      TimerButtonLabel(
+        title: "Start", systemImage: "play.circle", color: Color.green)
+        .preferredColorScheme(.dark)
+        .previewLayout(.fixed(width: 400, height: 80))
+      
+      TimerButtonLabel(
+        title: "Pause", systemImage: "pause.circle", color: Color.yellow)
+        .preferredColorScheme(.dark)
+        .previewLayout(.fixed(width: 400, height: 80))
+
+      TimerButtonLabel(
+        title: "Stop", systemImage: "stop.circle", color: Color.red)
+        .preferredColorScheme(.dark)
+        .previewLayout(.fixed(width: 400, height: 80))
+    }
   }
 }

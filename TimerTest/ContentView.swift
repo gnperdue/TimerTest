@@ -5,6 +5,7 @@
 //  Created by Gabriel Perdue on 1/16/21.
 //
 
+import Foundation
 import SwiftUI
 
 struct ContentView: View {
@@ -15,7 +16,7 @@ struct ContentView: View {
       TimerView(timerManager: timerManager)
         .padding(.vertical)
       //
-      Button(action: { print("\(timerManager.elapsedSeconds)") },
+      Button(action: { print("\(Int16(round(timerManager.elapsedSeconds)))") },
              label: { Label("Log time", systemImage: "folder.badge.plus")})
         .padding()
         .background(Color.blue.opacity(0.1))
