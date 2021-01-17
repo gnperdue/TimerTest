@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
   @StateObject private var timerManager = TimerManager()
+  @State var modalIsPresented = false
 
   var body: some View {
     VStack {
@@ -23,7 +24,11 @@ struct ContentView: View {
         .overlay(
           RoundedRectangle(cornerRadius: 6)
             .stroke(Color.blue, lineWidth: 5))
-
+      Button(action: { modalIsPresented = true },
+             label: { Label("Show modal", systemImage: "gear") })
+    }
+    .sheet(isPresented: $modalIsPresented) {
+      SheetView()
     }
   }
 }
