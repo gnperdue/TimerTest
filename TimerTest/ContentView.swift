@@ -13,6 +13,7 @@ struct ContentView: View {
   @State var modalIsPresented = false
 
   var body: some View {
+    #warning("next try a navigation view with bar items")
     VStack {
       TimerView(timerManager: timerManager)
         .padding(.vertical)
