@@ -15,8 +15,6 @@ struct ContentView: View {
     NavigationView {
       VStack {
         Text(String(Int(timerManager.elapsedSeconds)))
-          .font(.custom("courier", size: 32, relativeTo: .headline))
-          .padding()
         Button(action: { timerManager.start() },
                label: { Label("Start timer", systemImage: "play") })
         Button(action: { timerManager.stop() },
