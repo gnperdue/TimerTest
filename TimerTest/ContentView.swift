@@ -15,26 +15,25 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       VStack {
-        TimerView(timerManager: timerManager)
-          .padding(.vertical)
-        //
-        Button(action: { print("\(Int16(round(timerManager.elapsedSeconds)))") },
-               label: { Label("Log time", systemImage: "folder.badge.plus")})
+        Text("Time")
+        Text(convertCountToTimeString(
+              elapsedSeconds: timerManager.elapsedSeconds))
+          .font(.custom("courier", size: 32, relativeTo: .headline))
           .padding()
-          .background(Color.blue.opacity(0.1))
-          .overlay(
-            RoundedRectangle(cornerRadius: 6)
-              .stroke(Color.blue, lineWidth: 5))
-        Button(action: { modalIsPresented = true },
-               label: { Label("Show modal", systemImage: "gear") })
+        Button(action: { timerManager.start() },
+               label: { Label("Start timer",
+                              systemImage: "clock.arrow.circlepath") })
+        Button(action: { timerManager.stop() },
+               label: { Label("Stop timer",
+                              systemImage: "clock.arrow.circlepath") })
       }
       .navigationBarTitle(Text("Nav Bar Title"))
       .navigationBarItems(
-        leading: timerManager.mode == .running ?
+        leading: timerManager.mode == .stopped ?
           AnyView(EditButton()) :AnyView(EmptyView()),
-        trailing: timerManager.mode == .running ?
+        trailing: timerManager.mode == .stopped ?
           AnyView(Button(action: { modalIsPresented = true }) {
-                    Label("Show modal", systemImage: "plus") }) :
+                    Label("Show modal", systemImage: "gear") }) :
           AnyView(EmptyView())
       )
       .sheet(isPresented: $modalIsPresented) {

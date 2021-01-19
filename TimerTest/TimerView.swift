@@ -15,11 +15,9 @@ struct TimerView: View {
       Text(convertCountToTimeString(
             elapsedSeconds: timerManager.elapsedSeconds))
         .font(.custom("courier", size: 32, relativeTo: .headline))
-        .modifier(Shadow())
         .padding()
       HStack(spacing: 22) {
         Button(action: {
-          print("pressed play/pause")
           switch timerManager.mode {
           case .running:
             timerManager.pause()
@@ -38,7 +36,6 @@ struct TimerView: View {
           }
         })
         Button(action: {
-          print("pressed stop")
           timerManager.stop()
         }, label: {
           TimerButtonLabel(
@@ -70,12 +67,6 @@ struct TimerButtonLabel: View {
   }
 }
 
-
-struct Shadow: ViewModifier {
-  func body(content: Content) -> some View {
-    return content.shadow(color: Color.black, radius: 5, x: 2, y: 2)
-  }
-}
 
 
 struct TimerView_Previews: PreviewProvider {

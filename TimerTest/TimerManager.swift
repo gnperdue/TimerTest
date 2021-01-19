@@ -53,7 +53,6 @@ public class TimerManager: ObservableObject {
     timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) {_ in
       self.elapsedSeconds += 0.01
     }
-    print("started timer...")
   }
   
   func pause() {
@@ -65,6 +64,5 @@ public class TimerManager: ObservableObject {
     timer.invalidate()
     elapsedSeconds = 0.0
     mode = .stopped
-    print("stopped timer...")
   }
 }
