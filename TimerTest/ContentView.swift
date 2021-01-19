@@ -22,15 +22,13 @@ struct ContentView: View {
                label: { Label("Start timer", systemImage: "play") })
         Button(action: { timerManager.stop() },
                label: { Label("Stop timer", systemImage: "stop") })
+        Button(action: { modalIsPresented = true },
+               label: { Label("Show modal", systemImage: "gear") })
       }
       .navigationBarTitle(Text("Nav Bar Title"))
       .navigationBarItems(
-        leading: timerManager.mode == .running ?
-          AnyView(EditButton()) :AnyView(EmptyView()),
-        trailing: timerManager.mode == .running ?
-          AnyView(Button(action: { modalIsPresented = true }) {
-                    Label("Show modal", systemImage: "gear") }) :
-          AnyView(EmptyView())
+        trailing: Button(action: { modalIsPresented = true }) {
+                    Label("Show modal", systemImage: "gear") }
       )
       .sheet(isPresented: $modalIsPresented) {
         SheetView()
@@ -42,7 +40,6 @@ struct ContentView: View {
 enum timerMode {
   case running, paused, stopped
 }
-
 
 public class TimerManager: ObservableObject {
   @Published var elapsedSeconds: Double = 0.0
@@ -68,19 +65,13 @@ public class TimerManager: ObservableObject {
   }
 }
 
-
 struct SheetView: View {
   @Environment(\.presentationMode) var mode: Binding<PresentationMode>
 
   var body: some View {
-
-    Button(action: {
-      self.mode.wrappedValue.dismiss()
-    }, label: {
-      Label("Enter data", systemImage: "hand.point.up.left")
-    })
-    .padding()
-    
+    Button(action: { mode.wrappedValue.dismiss() },
+           label: { Label("Enter data", systemImage: "hand.point.up.left") })
+      .padding()
   }
 }
 
