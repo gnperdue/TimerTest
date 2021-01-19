@@ -15,23 +15,19 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       VStack {
-        Text("Time")
-        Text(convertCountToTimeString(
-              elapsedSeconds: timerManager.elapsedSeconds))
+        Text(String(Int(timerManager.elapsedSeconds)))
           .font(.custom("courier", size: 32, relativeTo: .headline))
           .padding()
         Button(action: { timerManager.start() },
-               label: { Label("Start timer",
-                              systemImage: "clock.arrow.circlepath") })
+               label: { Label("Start timer", systemImage: "play") })
         Button(action: { timerManager.stop() },
-               label: { Label("Stop timer",
-                              systemImage: "clock.arrow.circlepath") })
+               label: { Label("Stop timer", systemImage: "stop") })
       }
       .navigationBarTitle(Text("Nav Bar Title"))
       .navigationBarItems(
-        leading: timerManager.mode == .stopped ?
+        leading: timerManager.mode == .running ?
           AnyView(EditButton()) :AnyView(EmptyView()),
-        trailing: timerManager.mode == .stopped ?
+        trailing: timerManager.mode == .running ?
           AnyView(Button(action: { modalIsPresented = true }) {
                     Label("Show modal", systemImage: "gear") }) :
           AnyView(EmptyView())
@@ -40,6 +36,35 @@ struct ContentView: View {
         SheetView()
       }
     }
+  }
+}
+
+enum timerMode {
+  case running, paused, stopped
+}
+
+
+public class TimerManager: ObservableObject {
+  @Published var elapsedSeconds: Double = 0.0
+  @Published var mode: timerMode = .stopped
+  private(set) var timer = Timer()
+  
+  func start() {
+    mode = .running
+    timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) {_ in
+      self.elapsedSeconds += 0.01
+    }
+  }
+  
+  func pause() {
+    timer.invalidate()
+    mode = .paused
+  }
+  
+  func stop() {
+    timer.invalidate()
+    elapsedSeconds = 0.0
+    mode = .stopped
   }
 }
 
