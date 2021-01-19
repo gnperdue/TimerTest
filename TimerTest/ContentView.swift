@@ -45,6 +45,22 @@ struct ContentView: View {
 }
 
 
+struct SheetView: View {
+  @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+
+  var body: some View {
+
+    Button(action: {
+      self.mode.wrappedValue.dismiss()
+    }, label: {
+      Label("Enter data", systemImage: "hand.point.up.left")
+    })
+    .padding()
+    
+  }
+}
+
+
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
