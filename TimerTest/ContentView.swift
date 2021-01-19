@@ -11,25 +11,35 @@ import SwiftUI
 struct ContentView: View {
   @StateObject private var timerManager = TimerManager()
   @State var modalIsPresented = false
-
+  
   var body: some View {
-    #warning("next try a navigation view with bar items")
-    VStack {
-      TimerView(timerManager: timerManager)
-        .padding(.vertical)
-      //
-      Button(action: { print("\(Int16(round(timerManager.elapsedSeconds)))") },
-             label: { Label("Log time", systemImage: "folder.badge.plus")})
-        .padding()
-        .background(Color.blue.opacity(0.1))
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke(Color.blue, lineWidth: 5))
-      Button(action: { modalIsPresented = true },
-             label: { Label("Show modal", systemImage: "gear") })
-    }
-    .sheet(isPresented: $modalIsPresented) {
-      SheetView()
+    NavigationView {
+      VStack {
+        TimerView(timerManager: timerManager)
+          .padding(.vertical)
+        //
+        Button(action: { print("\(Int16(round(timerManager.elapsedSeconds)))") },
+               label: { Label("Log time", systemImage: "folder.badge.plus")})
+          .padding()
+          .background(Color.blue.opacity(0.1))
+          .overlay(
+            RoundedRectangle(cornerRadius: 6)
+              .stroke(Color.blue, lineWidth: 5))
+        Button(action: { modalIsPresented = true },
+               label: { Label("Show modal", systemImage: "gear") })
+      }
+      .navigationBarTitle(Text("Nav Bar Title"))
+      .navigationBarItems(
+        leading: timerManager.mode == .running ?
+          AnyView(EditButton()) :AnyView(EmptyView()),
+        trailing: timerManager.mode == .running ?
+          AnyView(Button(action: { modalIsPresented = true }) {
+                    Label("Show modal", systemImage: "plus") }) :
+          AnyView(EmptyView())
+      )
+      .sheet(isPresented: $modalIsPresented) {
+        SheetView()
+      }
     }
   }
 }

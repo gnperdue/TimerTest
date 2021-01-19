@@ -15,12 +15,7 @@ struct TimerView: View {
       Text(convertCountToTimeString(
             elapsedSeconds: timerManager.elapsedSeconds))
         .font(.custom("courier", size: 32, relativeTo: .headline))
-//        .modifier(Shadow())
-        .padding()
-      Text(convertCountToTimeString(
-            elapsedSeconds: timerManager.elapsedSeconds))
-        .font(.custom("courier", size: 32))
-//        .modifier(Shadow())
+        .modifier(Shadow())
         .padding()
       HStack(spacing: 22) {
         Button(action: {
