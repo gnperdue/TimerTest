@@ -8,21 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject private var timerManager = TimerManager()
   @State var modalIsPresented = false
   
   var body: some View {
     NavigationView {
       VStack {
-//        Text(String(Int(timerManager.elapsedSeconds)))
-        Button(action: { timerManager.start() },
-               label: { Label("Start timer", systemImage: "play") })
-        Button(action: { timerManager.pause() },
-               label: { Label("Pause timer", systemImage: "pause") })
-        Button(action: { timerManager.stop() },
-               label: { Label("Stop timer", systemImage: "stop") })
+        TimerView()
         Button(action: { modalIsPresented = true },
                label: { Label("Show modal", systemImage: "gear") })
+
       }
       .navigationBarTitle(Text("Nav Bar Title"))
       .navigationBarItems(
@@ -38,8 +32,17 @@ struct ContentView: View {
 
 
 struct TimerView: View {
+  @StateObject private var timerManager = TimerManager()
   var body: some View {
-    Text("0")
+    VStack {
+      Text(String(Int(timerManager.elapsedSeconds)))
+      Button(action: { timerManager.start() },
+             label: { Label("Start timer", systemImage: "play") })
+      Button(action: { timerManager.pause() },
+             label: { Label("Pause timer", systemImage: "pause") })
+      Button(action: { timerManager.stop() },
+             label: { Label("Stop timer", systemImage: "stop") })
+    }
   }
 }
 
