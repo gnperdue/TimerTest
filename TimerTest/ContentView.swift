@@ -14,9 +14,11 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       VStack {
-        Text(String(Int(timerManager.elapsedSeconds)))
+//        Text(String(Int(timerManager.elapsedSeconds)))
         Button(action: { timerManager.start() },
                label: { Label("Start timer", systemImage: "play") })
+        Button(action: { timerManager.pause() },
+               label: { Label("Pause timer", systemImage: "pause") })
         Button(action: { timerManager.stop() },
                label: { Label("Stop timer", systemImage: "stop") })
         Button(action: { modalIsPresented = true },
@@ -34,6 +36,13 @@ struct ContentView: View {
   }
 }
 
+
+struct TimerView: View {
+  var body: some View {
+    Text("0")
+  }
+}
+
 enum timerMode {
   case running, paused, stopped
 }
@@ -48,17 +57,20 @@ public class TimerManager: ObservableObject {
     timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) {_ in
       self.elapsedSeconds += 0.01
     }
+    print("timer start")
   }
   
   func pause() {
     timer.invalidate()
     mode = .paused
+    print("timer pause at \(elapsedSeconds)")
   }
   
   func stop() {
     timer.invalidate()
     elapsedSeconds = 0.0
     mode = .stopped
+    print("timer stop")
   }
 }
 
